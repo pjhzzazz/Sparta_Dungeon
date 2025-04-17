@@ -9,8 +9,8 @@ namespace SpartaDungeon
         static void Main(string[] args)
         {
             string saveFilePath = "savegame.txt";
-            Console.Write("이름을 입력하면 게임이 시작됩니다:");
-            
+            Console.Write("엔터키를 누르면 게임이 시작됩니다.");
+
             Character character = new Character();
             Inventory inventory = new Inventory();
             EquipManageMent equip = new EquipManageMent();
@@ -28,37 +28,49 @@ namespace SpartaDungeon
             Item HolySword = new Item("성기사의 검", 30, 0, "던전을 정복했던 누군가의 검입니다.", 10000, ItemType.Weapon);
             Item HolyArmor = new Item("성기사의 갑옷", 0, 30, "던전을 정복했던 누군가의 갑옷입니다.", 10000, ItemType.Armor);
 
+
             if (File.Exists(saveFilePath))
             {
                 Console.WriteLine("저장된 게임이 있습니다.");
                 Console.WriteLine("1. 새로운 게임 시작");
                 Console.WriteLine("2. 저장된 게임 불러오기");
-                Console.Write("원하는 선택을 하세요: ");
-                int choice = int.Parse(Console.ReadLine());
 
+                bool isChoice = true;
+                while (isChoice)
+                {
+                    Console.WriteLine("원하는 선택을 하세요: ");
+                    Console.Write(">>");
 
-                if (choice == 1)
-                {
-                    Console.WriteLine("새로운 게임을 시작합니다.");
-                    Console.Write("이름을 입력하면 게임이 시작됩니다: ");
-                    character.name = Console.ReadLine();
-                    character.StartNewGame(inventory,saveFilePath);// 새로운 이름 입력받기                   
-                }
-                else if (choice == 2)
-                {
-                    Console.WriteLine("저장된 게임을 불러옵니다.");
-                    LoadGame(character, saveFilePath, inventory.GetInventoryItem());  // 저장된 게임을 불러오기
-                }
-                else
-                {
-                    Console.WriteLine("잘못된 선택입니다. 새로운 게임을 시작합니다.");
-                    Console.Write("이름을 입력하면 게임이 시작됩니다: ");
-                    character.name = Console.ReadLine();  // 새로운 이름 입력받기
+                    int choice;
+                    if (int.TryParse(Console.ReadLine(), out choice))
+                    {
+
+                        if (choice == 1)
+                        {
+                            Console.WriteLine("새로운 게임을 시작합니다.");
+                            Console.Write("이름을 입력해주세요 : ");
+                            character.name = Console.ReadLine();
+                            character.StartNewGame(inventory, saveFilePath);
+                            isChoice = false;
+                        }
+                        else if (choice == 2)
+                        {
+                            Console.WriteLine("저장된 게임을 불러옵니다.");
+                            LoadGame(character, saveFilePath, inventory.GetInventoryItem());
+                            isChoice = false;
+                        }
+                        else
+                        {
+                            Console.WriteLine("잘못된 입력입니다.");
+                        }
+                    }
                 }
             }
             else
             {
-                Console.WriteLine("새로운 게임을 시작합니다.");           
+                Console.WriteLine("새로운 게임을 시작합니다.");
+                Console.Write("이름을 입력해주세요 :");
+                character.name = Console.ReadLine();
             }
 
             shop.AddItem(NoviceArmor);
@@ -73,7 +85,7 @@ namespace SpartaDungeon
             bool gamePlay = true;       
             
             while (gamePlay)
-            {
+            {                
                 Console.WriteLine("스파르타 마을에 오신 여러분 환영합니다");
                 Console.WriteLine("이곳에서 던전으로 들어가기전 활동을 할 수 있습니다.");
                 Console.Write("\n1. 상태 보기\n2. 인벤토리\n3. 상점\n4. 던전입장\n5. 휴식하기\n6. 게임 저장\n7. 게임 불러오기\n8. 게임 종료\n\n원하시는 행동을 입력해주세요.\n>>");
@@ -213,7 +225,7 @@ namespace SpartaDungeon
                                 Console.WriteLine("던전입장");
                                 Console.WriteLine("이곳에서 던전으로 들어가기전 활동을 할 수 있습니다.");
                                 dungeon.DungeonInfo(character);
-
+                            if (character.Hp <= 0) gamePlay = false;                           
                             break;
 
                         case 5:
@@ -251,13 +263,13 @@ namespace SpartaDungeon
                             break;
 
                         case 6:
-                            // 게임 저장
-                            SaveGame(character, saveFilePath, inventory.GetInventoryItem());
+                            
+                            SaveGame(character, saveFilePath, inventory.GetInventoryItem());                           
                             break;
 
                         case 7:
 
-                            // 게임 불러오기
+                           
                             LoadGame(character, saveFilePath, inventory.GetInventoryItem());
                             break;
 
@@ -268,11 +280,14 @@ namespace SpartaDungeon
                         default:
                             Console.WriteLine("잘못된 입력입니다.");
                             break;
+
+                            
                     }
                 else
                 {
                     Console.WriteLine("숫자를 입력해주세요");
                 }
+                
             }
         }
         class Character
@@ -659,7 +674,7 @@ namespace SpartaDungeon
             }
         enum DungeonType
         {
-            Easy ,
+            Easy   =1,
             Normal,
             Hard
         }
@@ -673,9 +688,9 @@ namespace SpartaDungeon
             public int Clear { get; set; }
 
             public void DungeonInfo(Character character)
-            {
-                while (true)
-                {
+            {  bool isShow = true;
+                while (isShow)
+                {  
                     Console.WriteLine();
                     Console.WriteLine();
                     Console.WriteLine("1.쉬운 던전    | 방어력 5 이상 권장");
@@ -694,20 +709,32 @@ namespace SpartaDungeon
                             case 1:
                                 EntranceDungeon(character, DungeonType.Easy);
                                 DungeonReward(character, DungeonType.Easy);
+
                                 break;
                             case 2:
                                 EntranceDungeon(character, DungeonType.Normal);
                                 DungeonReward(character, DungeonType.Normal);
+
                                 break;
                             case 3:
                                 EntranceDungeon(character, DungeonType.Hard);
                                 DungeonReward(character, DungeonType.Hard);
+
                                 break;
                             case 0:
                                 return;
+
                             default:
                                 Console.WriteLine("잘못된 숫자입니다. 0~3 사이 숫자를 입력해주세요.");
                                 break;
+
+                        }
+                        if (character.Hp <= 0)
+                        {
+                            isShow = false;
+                            Console.WriteLine();
+                            Console.WriteLine("Game Over");
+                            Console.WriteLine("게임이 종료됩니다.");
                         }
                     }
                     else
@@ -717,34 +744,38 @@ namespace SpartaDungeon
                
                 }
             }
+            
             public void EntranceDungeon( Character character, DungeonType dungeonType)
             {
                 Random rand = new Random();
                 int percent = rand.Next(1, 101);
 
                 DungeonType = dungeonType;
+                           
+                    switch (dungeonType)
 
-                switch (dungeonType)
+                    {
 
-                {
-                    case DungeonType.Easy:
-                        RecommendedArmor = 5;
-                        break;
+                        case DungeonType.Easy:
+                            RecommendedArmor = 5;
+                            break;
 
-                    case DungeonType.Normal:
-                        RecommendedArmor = 11;
-                        break;
+                        case DungeonType.Normal:
+                            RecommendedArmor = 11;
+                            break;
 
-                    case DungeonType.Hard:
-                        RecommendedArmor = 17;
-                        break;
+                        case DungeonType.Hard:
+                            RecommendedArmor = 17;
+                            break;
 
-                }
-            
+                    }
+                    
+     
                 if(character.Armor + character.bonusDef >= RecommendedArmor)
                 {
                     isSuccess = true;                   
                 }
+                
                 else
                 {
                     if (percent < 41)
@@ -771,9 +802,9 @@ namespace SpartaDungeon
 
             public void DungeonReward(Character character, DungeonType dungeonType)
             {
-                
-                while (isSuccess)
-                {
+
+                if (!isSuccess) return;
+                    
                     DungeonType = dungeonType;
                     float previousHp = character.Hp;
                     float previouGold = character.Gold;
@@ -785,32 +816,29 @@ namespace SpartaDungeon
 
                     switch (dungeonType)
                     {
-                        case DungeonType.Easy:
+                        case DungeonType.Easy:                          
                             character.Gold += (1000 + 10 * (TotalAtk * bonus));
-                            character.Hp -= (HpDecrease + (RecommendedArmor - TotalArm));
+                            character.Hp -= (HpDecrease + (RecommendedArmor - TotalArm));                         
                             Console.WriteLine();
                             Console.WriteLine("던전 클리어");
                             Console.WriteLine("축하 합니다!!");
-                            Console.WriteLine($"쉬운 던전을 클리어 하셨습니다");
-
+                            Console.WriteLine($"쉬운 던전을 클리어 하셨습니다");                            
                             break;
-                        case DungeonType.Normal:
+                        case DungeonType.Normal:                           
                             character.Gold += (1700 + 17 *(TotalAtk * bonus));
-                            character.Hp -= (HpDecrease + (RecommendedArmor - TotalArm));
+                            character.Hp -= (HpDecrease + (RecommendedArmor - TotalArm));                          
                             Console.WriteLine();
                             Console.WriteLine("던전 클리어");
                             Console.WriteLine("축하 합니다!!");
-                            Console.WriteLine($"일반 던전을 클리어 하셨습니다");
-                            
+                            Console.WriteLine($"일반 던전을 클리어 하셨습니다");                          
                             break;
-                        case DungeonType.Hard:
+                        case DungeonType.Hard:                          
                             character.Gold += (2500 + 25 * (TotalAtk * bonus));
-                            character.Hp -= (HpDecrease + (RecommendedArmor - TotalArm));
+                            character.Hp -= (HpDecrease + (RecommendedArmor - TotalArm));                            
                             Console.WriteLine();
                             Console.WriteLine("던전 클리어");
                             Console.WriteLine("축하 합니다!!");
-                            Console.WriteLine($"어려운 던전을 클리어 하셨습니다");
-                            
+                            Console.WriteLine($"어려운 던전을 클리어 하셨습니다");                         
                             break;                     
                     }
 
@@ -825,13 +853,24 @@ namespace SpartaDungeon
                     Console.WriteLine();
                     Console.WriteLine("원하시는 행동을 입력해주세요.");
                     Console.Write(">>");
+
                     int num;
                     if(int.TryParse(Console.ReadLine(),out num))
                     {
-                        if (num == 0) break;
+                        if (num == 0) return;
+
+                        else
+                        {
+                            Console.WriteLine("잘못된 입력입니다.");
+                        }
+                    }                  
+                    
+                    else
+                    {
+                        Console.WriteLine("잘못된 입력입니다.");
                     }
 
-                }
+                
 
             }
             public void LevelUp(Character character)
