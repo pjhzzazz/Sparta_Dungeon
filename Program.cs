@@ -9,8 +9,7 @@ namespace SpartaDungeon
         static void Main(string[] args)
         {
             string saveFilePath = "savegame.txt";
-            Console.Write("엔터키를 누르면 게임이 시작됩니다.");
-
+            
             Character character = new Character();
             Inventory inventory = new Inventory();
             EquipManageMent equip = new EquipManageMent();
@@ -22,7 +21,7 @@ namespace SpartaDungeon
             Item IronArmor = new Item("무쇠 갑옷", 0, 9, "무쇠로 만들어져 튼튼한 갑옷입니다.", 1000, ItemType.Armor);
             Item SpartaSpear = new Item("스파르타의 창", 7, 0, "스파르타의 전사들이 사용했다는 전설의 창입니다.", 2000, ItemType.Weapon);
             Item OldSword = new Item("낡은 검", 2, 0, "쉽게 볼 수 있는 낡은 검 입니다.", 600, ItemType.Weapon);
-            Item NoviceArmor = new Item("수련자 갑옷", 0, 5, "수련에 도움을 주는 갑옷입니다.", 1000, ItemType.Armor);
+            Item NoviceArmor = new Item("수련자 갑옷", 0, 5, "수련에 도움을 주는 갑옷입니다.", 500, ItemType.Armor);
             Item SpartaArmor = new Item("스파르타 갑옷", 0, 15, "스파르타의 전사들이 사용했다는 전설의 갑옷입니다.", 3500, ItemType.Armor);
             Item BronzeAxe = new Item("청동 도끼", 5, 0, "어딘가 사용 됐던 거 같은 도끼입니다.", 1500, ItemType.Weapon);
             Item HolySword = new Item("성기사의 검", 30, 0, "던전을 정복했던 누군가의 검입니다.", 10000, ItemType.Weapon);
@@ -71,6 +70,7 @@ namespace SpartaDungeon
                 Console.WriteLine("새로운 게임을 시작합니다.");
                 Console.Write("이름을 입력해주세요 :");
                 character.name = Console.ReadLine();
+                character.StartNewGame(inventory, saveFilePath);
             }
 
             shop.AddItem(NoviceArmor);
@@ -295,7 +295,7 @@ namespace SpartaDungeon
             
             public int level { get; set; } = 1;
             public string job { get; set; } = "전사";
-            public string name { get; set; } = Console.ReadLine();
+            public string name { get; set; }
             public float Hp { get; set; } = 100;
             public float Gold { get; set; } = 1500;
             public float Attack { get; set; } = 10;
@@ -901,12 +901,12 @@ namespace SpartaDungeon
                     writer.WriteLine($"Hp: {character.Hp}");
                     writer.WriteLine($"Attack: {character.Attack}");
                     writer.WriteLine($"Armor: {character.Armor}");
-
+                    
                     // 아이템 목록 저장
                     writer.WriteLine("Items:");
                     foreach (var item in inventory)
                     {
-                        writer.WriteLine($"{item.Name},{item.Atk},{item.Def},{item.Price},{item.isEquipped},{item.ItemType}");
+                        writer.WriteLine($"{item.Name},{item.Atk},{item.Def},{item.Desc},{item.Price},{item.isEquipped},{item.ItemType}");
                     }
 
                     Console.WriteLine("게임이 저장되었습니다.");
@@ -966,17 +966,18 @@ namespace SpartaDungeon
 
                             string[] itemParts = line.Split(',');
 
-                            if (itemParts.Length == 6)
+                            if (itemParts.Length == 7)
                             {
                                 string name = itemParts[0].Trim();
                                 float atk = float.Parse(itemParts[1].Trim());
                                 float def = float.Parse(itemParts[2].Trim());
-                                float price = float.Parse(itemParts[3].Trim());
-                                bool isEquipped = bool.Parse(itemParts[4].Trim());
-                                ItemType itemType = (ItemType)Enum.Parse(typeof(ItemType), itemParts[5].Trim());
+                                string desc = Convert.ToString(itemParts[3].Trim());
+                                float price = float.Parse(itemParts[4].Trim());
+                                bool isEquipped = bool.Parse(itemParts[5].Trim());
+                                ItemType itemType = (ItemType)Enum.Parse(typeof(ItemType), itemParts[6].Trim());
 
                                 // 아이템 객체 생성
-                                Item item = new Item(name, atk, def, "", price, itemType);
+                                Item item = new Item(name, atk, def, desc, price, itemType);
                                 item.isEquipped = isEquipped;
 
                                 // 중복 아이템 체크 후 추가
