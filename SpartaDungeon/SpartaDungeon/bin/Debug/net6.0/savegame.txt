@@ -1,0 +1,8 @@
+Name: 지환
+Level: 3
+Gold: 805
+Hp: 100
+Attack: 11
+Armor: 7
+Items:
+스파르타 갑옷,0,15,스파르타의 전사들이 사용했다는 전설의 갑옷입니다.,3500,True,Armor

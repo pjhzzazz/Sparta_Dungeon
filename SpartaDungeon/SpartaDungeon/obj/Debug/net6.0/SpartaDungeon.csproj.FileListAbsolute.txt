@@ -1,0 +1,15 @@
+C:\Playlists\SpartaDungeon\SpartaDungeon\bin\Debug\net6.0\SpartaDungeon.exe
+C:\Playlists\SpartaDungeon\SpartaDungeon\bin\Debug\net6.0\SpartaDungeon.deps.json
+C:\Playlists\SpartaDungeon\SpartaDungeon\bin\Debug\net6.0\SpartaDungeon.runtimeconfig.json
+C:\Playlists\SpartaDungeon\SpartaDungeon\bin\Debug\net6.0\SpartaDungeon.dll
+C:\Playlists\SpartaDungeon\SpartaDungeon\bin\Debug\net6.0\SpartaDungeon.pdb
+C:\Playlists\SpartaDungeon\SpartaDungeon\obj\Debug\net6.0\SpartaDungeon.csproj.AssemblyReference.cache
+C:\Playlists\SpartaDungeon\SpartaDungeon\obj\Debug\net6.0\SpartaDungeon.GeneratedMSBuildEditorConfig.editorconfig
+C:\Playlists\SpartaDungeon\SpartaDungeon\obj\Debug\net6.0\SpartaDungeon.AssemblyInfoInputs.cache
+C:\Playlists\SpartaDungeon\SpartaDungeon\obj\Debug\net6.0\SpartaDungeon.AssemblyInfo.cs
+C:\Playlists\SpartaDungeon\SpartaDungeon\obj\Debug\net6.0\SpartaDungeon.csproj.CoreCompileInputs.cache
+C:\Playlists\SpartaDungeon\SpartaDungeon\obj\Debug\net6.0\SpartaDungeon.dll
+C:\Playlists\SpartaDungeon\SpartaDungeon\obj\Debug\net6.0\refint\SpartaDungeon.dll
+C:\Playlists\SpartaDungeon\SpartaDungeon\obj\Debug\net6.0\SpartaDungeon.pdb
+C:\Playlists\SpartaDungeon\SpartaDungeon\obj\Debug\net6.0\SpartaDungeon.genruntimeconfig.cache
+C:\Playlists\SpartaDungeon\SpartaDungeon\obj\Debug\net6.0\ref\SpartaDungeon.dll
